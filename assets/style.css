@@ -1,0 +1,34 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Tema Claro */
+.tema-claro {
+    background-color: #f9f9f9;
+    color: #222;
+}
+
+/* Tema Escuro */
+.tema-escuro {
+    background-color: #1e1e1e;
+    color: #ddd;
+}
+
+form input, form select {
+    padding: 6px;
+    margin-bottom: 10px;
+    width: 250px;
+}
+
+form button {
+    padding: 8px 12px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+a {
+    color: royalblue;
+    text-decoration: none;
+}
