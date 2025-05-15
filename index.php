@@ -127,6 +127,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit" name="acao" value="cadastrar">Cadastrar</button>
         <button type="submit" name="acao" value="login">Entrar</button>
     </form>
+    <img src="assets/img/borboleta.png" class="borboleta dir" alt="Borboleta topo">
+    <img src="assets/img/borboleta.png" class="borboleta esq" alt="Borboleta base">
 </body>
 </html>
 
