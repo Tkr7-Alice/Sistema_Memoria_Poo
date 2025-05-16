@@ -9,8 +9,8 @@
 body {
     font-family: Arial, sans-serif;
     min-height: 100vh;
-    background: linear-gradient(135deg, #4b0082, #8a2be2);
-    color: #fff;
+    background: linear-gradient(135deg,rgb(244, 242, 245), #6404be);
+    color: #033841;
     display: flex;
     flex-direction: column;
     align-items: center;

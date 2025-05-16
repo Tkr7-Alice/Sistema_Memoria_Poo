@@ -5,5 +5,12 @@
         "senha": "$2y$10$3kWdCBmCcWvcZSWL\/jXmPunXtf1dvZda3VzkIY1zYIWD\/YhpcFcRG",
         "idioma": "pt",
         "tema": "escuro"
+    },
+    {
+        "nome": "eduardo",
+        "email": "thomas.kirmeier@gmail.com",
+        "senha": "$2y$10$.WuuU3FgFO9xlOa5VImtTuJvmkrfkptOhPtVXvHtkqVvzXgNR4faa",
+        "idioma": "pt",
+        "tema": "claro"
     }
 ]
