@@ -1,7 +1,9 @@
 <?php
+// index.php
 require_once 'classes/Usuario.php';
 require_once 'classes/Administrador.php';
 require_once 'classes/Sessao.php';
+require_once 'config.php';
 
 Sessao::iniciar();
 
@@ -10,19 +12,25 @@ $sucesso = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $nome = trim($_POST['nome'] ?? '');
-        $email = trim($_POST['email'] ?? '');
+        // Sanitização e validação
+        $nome = htmlspecialchars(strip_tags(trim($_POST['nome'] ?? '')));
+        $email = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
         $senha = $_POST['senha'] ?? '';
-        $idioma = $_POST['idioma'] ?? 'pt';
-        $tema = $_POST['tema'] ?? 'claro';
-        $tipo = $_POST['tipo'] ?? 'usuario'; // opcional
+        $idioma = in_array($_POST['idioma'] ?? 'pt', ['pt', 'en']) ? $_POST['idioma'] : 'pt';
+        $tema = in_array($_POST['tema'] ?? 'claro', ['claro', 'escuro']) ? $_POST['tema'] : 'claro';
+        $tipo = $_POST['tipo'] ?? 'usuario';
 
-        if (empty($email) || empty($senha)) {
-            throw new Exception("Email e senha são obrigatórios.");
+        // Validação de email
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new Exception("Email inválido.");
+        }
+        if (empty($senha)) {
+            throw new Exception("Senha é obrigatória.");
         }
 
+        // Verificar se usuário já existe
         $usuarios = [];
-        $arquivo = 'storagem/usuarios.json';
+        $arquivo = CAMINHO_USUARIOS;
         if (file_exists($arquivo)) {
             $usuarios = json_decode(file_get_contents($arquivo), true);
         }
@@ -35,18 +43,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        if (isset($_POST['acao']) && $_POST['acao'] === 'login') {
+        if ($_POST['acao'] === 'login') {
             if (!$usuarioEncontrado) {
                 throw new Exception("Usuário não encontrado.");
             }
 
-            $obj = new Usuario(
-                $usuarioEncontrado['nome'],
-                $usuarioEncontrado['email'],
-                $usuarioEncontrado['senha'],
-                $usuarioEncontrado['idioma'],
-                $usuarioEncontrado['tema']
-            );
+            // Corrigido: usar htmlspecialchars para evitar XSS se necessário
+            $obj = ($email === EMAIL_ADMIN)
+                ? new Administrador($u['nome'], $u['email'], $u['senha'], $u['idioma'], $u['tema'])
+                : new Usuario($u['nome'], $u['email'], $u['senha'], $u['idioma'], $u['tema']);
 
             if (!$obj->verificarSenha($senha)) {
                 throw new Exception("Senha incorreta.");
@@ -62,12 +67,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("Já existe um usuário com esse email.");
         }
 
-        // Criar novo usuário
-        $novo = new Usuario($nome, $email, $senha, $idioma, $tema);
+        $novo = ($email === EMAIL_ADMIN)
+            ? new Administrador($nome, $email, $senha, $idioma, $tema)
+            : new Usuario($nome, $email, $senha, $idioma, $tema);
+
         $usuarios[] = [
             'nome' => $nome,
             'email' => $email,
-            'senha' => $novo->getSenhaHash(), // método que vamos adicionar
+            'senha' => $novo->getSenhaHash(),
             'idioma' => $idioma,
             'tema' => $tema
         ];
@@ -75,60 +82,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!is_dir('storagem')) {
             mkdir('storagem', 0777, true);
         }
-        
+
         file_put_contents($arquivo, json_encode($usuarios, JSON_PRETTY_PRINT));
 
-        $sucesso = "Usuário cadastrado com sucesso!";
+        Sessao::setarUsuario($novo);
+        header("Location: dashboard.php");
+        exit;
     } catch (Exception $e) {
         $erro = $e->getMessage();
     }
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Login e Cadastro</title>
-    <link rel="stylesheet" href="assets/style.css">
-    <script src="script/local.js" defer></script>
-</head>
-<body>
-    <h2>Cadastro / Login</h2>
-
-    <?php if ($erro): ?>
-        <p style="color: red;"><?= $erro ?></p>
-    <?php endif; ?>
-
-    <?php if ($sucesso): ?>
-        <p style="color: green;"><?= $sucesso ?></p>
-    <?php endif; ?>
-
-    <form method="POST">
-        <label>Nome Completo:</label><br>
-        <input type="text" name="nome" required><br><br>
-
-        <label>Email:</label><br>
-        <input type="email" name="email" required><br><br>
-
-        <label>Senha:</label><br>
-        <input type="password" name="senha" required><br><br>
-
-        <label>Idioma:</label><br>
-        <select name="idioma" id="idioma">
-            <option value="pt">Português</option>
-            <option value="en">Inglês</option>
-        </select><br><br>
-
-        <label>Tema:</label><br>
-        <input type="radio" name="tema" id="tema-claro" value="claro" checked> Claro
-        <input type="radio" name="tema" id="tema-escuro" value="escuro"> Escuro<br><br>
-
-        <button type="submit" name="acao" value="cadastrar">Cadastrar</button>
-        <button type="submit" name="acao" value="login">Entrar</button>
-    </form>
-    <img src="assets/img/borboleta.png" class="borboleta dir" alt="Borboleta topo">
-    <img src="assets/img/borboleta.png" class="borboleta esq" alt="Borboleta base">
-</body>
-</html>
-
