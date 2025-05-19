@@ -1,38 +1,25 @@
 <?php
 class Usuario {
-    private $nome;
-    private $email;
-    private $senha;
-    private $idioma;
-    private $tema;
+    protected $nome;
+    protected $email;
+    protected $senhaHash;
+    protected $idioma;
+    protected $tema;
 
-    public function __construct($nome, $email, $senha, $idioma, $tema) {
+    public function __construct($nome, $email, $senhaOuHash, $idioma = 'pt', $tema = 'claro', $jaHasheada = false) {
         $this->nome = $nome;
         $this->email = $email;
-        $this->senha = password_hash($senha, PASSWORD_DEFAULT);
         $this->idioma = $idioma;
         $this->tema = $tema;
-    }
-
-    public function exibirPerfil() {
-        return "Nome: {$this->nome}<br>Idioma: {$this->idioma}<br>Tema: {$this->tema}";
-    }
-
-    public function atualizarPreferencias($idioma, $tema) {
-        $this->idioma = $idioma;
-        $this->tema = $tema;
-    }
-
-    public function verificarSenha($senhaInformada) {
-        return password_verify($senhaInformada, $this->senha);
-    }
-
-    public function getEmail() {
-        return $this->email;
+        $this->senhaHash = $jaHasheada ? $senhaOuHash : password_hash($senhaOuHash, PASSWORD_DEFAULT);
     }
 
     public function getNome() {
         return $this->nome;
+    }
+
+    public function getEmail() {
+        return $this->email;
     }
 
     public function getIdioma() {
@@ -44,6 +31,10 @@ class Usuario {
     }
 
     public function getSenhaHash() {
-        return $this->senha;
+        return $this->senhaHash;
+    }
+
+    public function verificarSenha($senhaDigitada) {
+        return password_verify($senhaDigitada, $this->senhaHash);
     }
 }

@@ -48,7 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception("Usuário não encontrado.");
             }
 
-            // Corrigido: usar htmlspecialchars para evitar XSS se necessário
             $obj = ($email === EMAIL_ADMIN)
                 ? new Administrador($u['nome'], $u['email'], $u['senha'], $u['idioma'], $u['tema'])
                 : new Usuario($u['nome'], $u['email'], $u['senha'], $u['idioma'], $u['tema']);
@@ -93,3 +92,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Login / Cadastro</title>
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+<h2 style="text-align: center;">Bem-vindo</h2>
+
+<?php if ($erro): ?>
+    <div class="erro"><?php echo htmlspecialchars($erro); ?></div>
+<?php endif; ?>
+
+<form method="POST">
+    <input type="text" name="nome" placeholder="Nome" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="password" name="senha" placeholder="Senha" required>
+
+    <select name="idioma">
+        <option value="pt">Português</option>
+        <option value="en">Inglês</option>
+    </select>
+
+    <select name="tema">
+        <option value="claro">Claro</option>
+        <option value="escuro">Escuro</option>
+    </select>
+
+    <select name="acao">
+        <option value="login">Entrar</option>
+        <option value="cadastro">Cadastrar</option>
+    </select>
+
+    <button type="submit">Enviar</button>
+</form>
+
+</body>
+</html>
