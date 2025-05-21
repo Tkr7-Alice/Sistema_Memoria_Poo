@@ -2,29 +2,29 @@ document.addEventListener("DOMContentLoaded", () => {
     const temaSalvo = localStorage.getItem("tema");
     const idiomaSalvo = localStorage.getItem("idioma");
 
-    // Aplica tema
+    // Aplica tema nos radios de todos os formulários
     if (temaSalvo) {
         document.body.classList.add("tema-" + temaSalvo);
-        const radio = document.querySelector(`input[name="tema"][value="${temaSalvo}"]`);
-        if (radio) radio.checked = true;
+        document.querySelectorAll(`input[name="tema"][value="${temaSalvo}"]`).forEach(radio => {
+            radio.checked = true;
+        });
     }
 
-    // Aplica idioma
+    // Aplica idioma em todos os selects nomeados "idioma"
     if (idiomaSalvo) {
-        const select = document.getElementById("idioma");
-        if (select) select.value = idiomaSalvo;
+        document.querySelectorAll('select[name="idioma"]').forEach(select => {
+            select.value = idiomaSalvo;
+        });
     }
 
-    // Quando o formulário for enviado
-    const form = document.querySelector("form");
-    if (form) {
+    // Para cada formulário na página, adicionar o evento submit
+    document.querySelectorAll("form").forEach(form => {
         form.addEventListener("submit", () => {
-            const tema = document.querySelector('input[name="tema"]:checked')?.value;
-            const idioma = document.getElementById("idioma")?.value;
+            const tema = form.querySelector('input[name="tema"]:checked')?.value;
+            const idioma = form.querySelector('select[name="idioma"]')?.value;
 
             if (tema) localStorage.setItem("tema", tema);
             if (idioma) localStorage.setItem("idioma", idioma);
         });
-    }
+    });
 });
-
