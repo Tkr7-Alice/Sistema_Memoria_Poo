@@ -1,14 +1,16 @@
 <?php
-require_once 'classes/Sessao.php';
-require_once 'classes/Administrador.php';
 require_once 'config.php';
+require_once 'classes/Sessao.php';
+require_once 'classes/Usuario.php';
+require_once 'classes/Administrador.php';
+require_once 'lang.php';
 
 Sessao::iniciar();
 
 $usuario = Sessao::pegarUsuario();
 if (!$usuario) {
     header("Location: index.php");
-    exit;
+    exit();
 }
 
 $isAdmin = $usuario instanceof Administrador || $usuario->getEmail() === EMAIL_ADMIN;
@@ -19,71 +21,44 @@ $idioma = htmlspecialchars($usuario->getIdioma());
 ?>
 
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="<?= $idioma ?>">
 <head>
     <meta charset="UTF-8">
-    <title>Painel do Usuário</title>
+    <title><?= traduzir('welcome', $idioma) ?>, <?= $nome ?></title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .painel {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            max-width: 600px;
-            margin-top: 80px;
-            animation: entradaSuave 0.8s ease;
-        }
-        .painel h2 {
-            color: #4b0082;
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-        .painel p {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-        }
-        .painel .admin-box {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: rgba(255,255,255,0.2);
-            border-radius: 10px;
-        }
-        .painel button {
-            padding: 10px 20px;
-            background-color: #ffffff;
-            color: #6404be;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        .painel button:hover {
-            background-color: #eee;
-        }
-    </style>
 </head>
-<body>
-    <div class="painel">
-        <h2>🎉 Bem-vindo, <?= $nome ?>!</h2>
-        <p><strong>Email:</strong> <?= $email ?></p>
-        <p><strong>Tema:</strong> <?= $tema ?></p>
-        <p><strong>Idioma:</strong> <?= $idioma ?></p>
+<body class="tema-<?= $tema ?>">
+    <div class="container">
+        <h1>🎉 <?= traduzir('welcome', $idioma) ?>, <?= $nome ?>!</h1>
+
+        <p><strong><?= traduzir('email', $idioma) ?>:</strong> <?= $email ?></p>
+        <p><strong><?= traduzir('theme', $idioma) ?>:</strong> <?= ucfirst($tema) ?></p>
+        <p><strong><?= traduzir('language', $idioma) ?>:</strong> <?= strtoupper($idioma) ?></p>
+
+        <div class="menu-botoes">
+            <a href="editar.php" class="botao"><?= traduzir('edit_profile', $idioma) ?></a>
+            <form action="logout.php" method="post" style="display:inline;">
+                <button type="submit" class="botao"><?= traduzir('logout', $idioma) ?></button>
+            </form>
+        </div>
 
         <?php if ($isAdmin): ?>
-            <div class="admin-box">
-                <h3>🔐 Área do Administrador</h3>
-                <?php $usuario->listarUsuarios(CAMINHO_USUARIOS); ?>
+            <div class="admin-box" style="margin-top:30px;">
+                <h2>🔐 <?= traduzir('admin_area', $idioma) ?></h2>
+                <h3><?= traduzir('user_list', $idioma) ?>:</h3>
+                <ul>
+                    <?php
+                    $lista = json_decode(file_get_contents(CAMINHO_USUARIOS), true);
+                    foreach ($lista as $u) {
+                        echo "<li>" . htmlspecialchars($u['nome']) . " — " . htmlspecialchars($u['email']);
+                        echo " <a href='excluir.php?email=" . urlencode($u['email']) . "' onclick=\"return confirm('Tem certeza que deseja excluir este usuário?');\">[" . traduzir('delete_user', $idioma) . "]</a></li>";
+                    }
+                    ?>
+                </ul>
             </div>
         <?php else: ?>
-            <p>Você está logado como <strong>usuário comum</strong>.</p>
+            <p style="margin-top: 20px;"><?= traduzir('logged_as_user', $idioma) ?></p>
         <?php endif; ?>
-
-        <form action="logout.php" method="post">
-            <button type="submit">Sair</button>
-        </form>
     </div>
 </body>
 </html>

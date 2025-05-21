@@ -5,12 +5,12 @@
     box-sizing: border-box;
 }
 
-/* Fundo com degradê roxo */
+/* Fonte e fundo */
 body {
     font-family: Arial, sans-serif;
     min-height: 100vh;
-    background: linear-gradient(135deg,rgb(244, 242, 245), #6404be);
-    color: #033841;
+    background: linear-gradient(135deg, #4b0082, #8a2be2);
+    color: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -18,53 +18,72 @@ body {
     position: relative;
 }
 
-/* Título */
-h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
+/* Container central */
+.container {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    max-width: 500px;
+    width: 100%;
+    backdrop-filter: blur(10px);
     text-align: center;
 }
 
-/* Formulário */
-form {
-    background-color: rgba(255, 255, 255, 0.05);
-    padding: 20px 25px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    width: 100%;
-    max-width: 400px;
-    backdrop-filter: blur(10px);
+/* Título */
+h1 {
+    font-size: 2.2rem;
+    margin-bottom: 30px;
 }
 
-/* Inputs e selects */
-form input,
-form select {
-    padding: 10px;
-    margin-bottom: 15px;
-    width: 100%;
-    border: none;
-    border-radius: 6px;
-    background-color: #f0f0f0;
-    color: #333;
+/* Botões do menu */
+.menu-botoes {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
 }
 
-/* Botões */
-form button {
-    padding: 10px 20px;
-    margin-right: 10px;
+.botao {
+    padding: 10px 25px;
     border: none;
     border-radius: 6px;
     background-color: #ffffff;
     color: #4b0082;
     font-weight: bold;
     cursor: pointer;
+    transition: background 0.3s ease;
 }
 
-form button:hover {
+.botao:hover {
     background-color: #eee;
 }
 
-/* Borboletas */
+/* Opções de tema e idioma */
+.opcoes {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.grupo-tema,
+.grupo-idioma {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Inputs e selects */
+input[type="radio"],
+select {
+    cursor: pointer;
+}
+
+/* Imagens decorativas */
 .borboleta {
     position: absolute;
     width: 120px;
@@ -82,18 +101,48 @@ form button:hover {
     left: 50px;
 }
 
+/* Tema escuro */
+.tema-escuro {
+    background: linear-gradient(135deg, #1c1c1c, #2f2f2f);
+    color: #fff;
+}
+
+.tema-claro {
+    background: linear-gradient(135deg, #f5f5f5, #ddd);
+    color: #000;
+}
+
 /* Responsivo */
 @media (max-width: 480px) {
-    form {
-        padding: 15px 20px;
+    .container {
+        padding: 20px 25px;
     }
 
-    h2 {
-        font-size: 1.5rem;
+    h1 {
+        font-size: 1.7rem;
+    }
+
+    .menu-botoes {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .opcoes {
+        flex-direction: column;
+        gap: 15px;
     }
 
     .borboleta {
         width: 80px;
     }
+}
+.botoes-form {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 10px;
+}
 
+.botoes-form button {
+    width: 100%;
 }

@@ -1,3 +1,9 @@
 [
-
+    {
+        "nome": "thomas",
+        "email": "admin@luiz.com",
+        "senha": "$2y$10$kg9My6jyHNhwK0PtwOWpcemDNeJFy0NJotri91YkP7fiKAeN3CmJ.",
+        "idioma": "pt",
+        "tema": "escuro"
+    }
 ]
