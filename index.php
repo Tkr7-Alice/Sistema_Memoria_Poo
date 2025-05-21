@@ -57,15 +57,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p class="erro"><strong>⚠ <?= htmlspecialchars($erro) ?></strong></p>
         <?php endif; ?>
 
-        <form method="post" novalidate>
-            <input type="email" name="email" placeholder="Email" required />
-            <input type="password" name="senha" placeholder="Senha" required />
+        <form method="post" novalidate autocomplete="off">
+            <input type="email" name="email" placeholder="Email" required autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" />
+            <input type="password" name="senha" placeholder="Senha" required autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" />
 
             <div class="botoes-form">
                 <a href="cadastro.php" class="botao botao-secundario">Cadastrar</a>
-                 <button type="submit" class="botao grande">Entrar</button>
+                <button type="submit" class="botao grande">Entrar</button>
             </div>
-
         </form>
     </div>
 
