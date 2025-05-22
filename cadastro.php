@@ -1,3 +1,4 @@
+<?php include 'tema.php'; ?>
 <?php
 require_once 'config.php';
 require_once 'classes/Usuario.php';
@@ -65,16 +66,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p class="erro"><strong>⚠ <?= htmlspecialchars($erro) ?></strong></p>
         <?php endif; ?>
 
-        <form method="post" novalidate autocomplete="off">
+        <form method="post" novalidate autocomplete="off" class="formulario <?= $temaSelecionado ?>">
             <input type="text" name="nome" placeholder="Nome" required autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" />
             <input type="email" name="email" placeholder="Email" required autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" />
             <input type="password" name="senha" placeholder="Senha" required autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" />
+
+            <select name="tema" onchange="this.form.submit()">
+                <option value="padrao" <?= $temaSelecionado === 'padrao' ? 'selected' : '' ?>>Nenhum</option>
+                <option value="claro" <?= $temaSelecionado === 'claro' ? 'selected' : '' ?>>Tema Claro</option>
+                <option value="escuro" <?= $temaSelecionado === 'escuro' ? 'selected' : '' ?>>Tema Escuro</option>
+            </select>
 
             <div class="botoes-form">
                 <a href="index.php" class="botao botao-secundario">Voltar</a>
                 <button type="submit" class="botao grande">Cadastrar</button>
             </div>
         </form>
+
+
     </div>
 
     <img src="assets/img/borboleta.png" class="borboleta dir" alt="Borboleta topo" />

@@ -1,4 +1,5 @@
 <?php
+// dashboard.php
 require_once 'config.php';
 require_once 'classes/Sessao.php';
 require_once 'classes/Usuario.php';
@@ -31,7 +32,7 @@ if ($isAdmin && file_exists(CAMINHO_USUARIOS)) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title><?= htmlspecialchars(traduzir('welcome', $idioma)) ?>, <?= $nome ?></title>
-    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/style.css" />
     <style>
         .menu-botoes {
             display: flex;
@@ -96,7 +97,7 @@ if ($isAdmin && file_exists(CAMINHO_USUARIOS)) {
 
         <div class="menu-botoes">
             <a href="editar.php" class="botao"><?= htmlspecialchars(traduzir('edit_profile', $idioma)) ?></a>
-            <form action="logout.php" method="post">
+            <form action="logout.php" method="post" style="display:inline;">
                 <button type="submit" class="botao"><?= htmlspecialchars(traduzir('logout', $idioma)) ?></button>
             </form>
         </div>
@@ -126,8 +127,7 @@ if ($isAdmin && file_exists(CAMINHO_USUARIOS)) {
         <?php endif; ?>
     </div>
 
-    <!-- Borboletas decorativas -->
-    <img src="assets/img/borboleta.png" class="borboleta dir" alt="Decorativa">
-    <img src="assets/img/borboleta.png" class="borboleta esq" alt="Decorativa">
+    <img src="assets/img/borboleta.png" class="borboleta dir" alt="Decorativa" />
+    <img src="assets/img/borboleta.png" class="borboleta esq" alt="Decorativa" />
 </body>
 </html>

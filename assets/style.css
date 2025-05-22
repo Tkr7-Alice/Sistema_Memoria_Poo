@@ -159,3 +159,26 @@ form select {
         width: 80px;
     }
 }
+/* Tema CLARO no formulário */
+.formulario.claro {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+.formulario.claro input,
+.formulario.claro select {
+    background-color: #f9f9f9;
+    color: #000;
+}
+
+/* Tema ESCURO no formulário */
+.formulario.escuro {
+    background-color: #1e1e2f !important;
+    color: #ffffff !important;
+}
+
+.formulario.escuro input,
+.formulario.escuro select {
+    background-color: #2e2e3e;
+    color: #ffffff;
+}

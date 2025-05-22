@@ -46,4 +46,16 @@ class Usuario {
     public function getSenhaHash() {
         return $this->senha;
     }
+
+    // ✅ Método necessário para salvar dados em JSON
+    public function toArray() {
+        return [
+            'nome'   => $this->nome,
+            'email'  => $this->email,
+            'senha'  => $this->senha,
+            'idioma' => $this->idioma,
+            'tema'   => $this->tema
+        ];
+    }
 }
+?>
